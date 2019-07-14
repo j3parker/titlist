@@ -6,3 +6,4 @@ authors = ["Jacob Parker <jacob@solidangle.ca>"]
 [dependencies]
 html5ever = "0.23.0"
 reqwest = "0.9.18"
+regex = "1.1.9"

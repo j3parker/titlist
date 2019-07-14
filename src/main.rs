@@ -1,9 +1,11 @@
 extern crate html5ever;
+extern crate regex;
 extern crate reqwest;
 
 use html5ever::tendril::*;
 use html5ever::local_name;
 use html5ever::tokenizer::{BufferQueue, CharacterTokens, TagToken, Token, TokenSink, TokenSinkResult, Tokenizer, StartTag, TokenizerOpts};
+use regex::Regex;
 use reqwest::Url;
 use std::process::exit;
 
@@ -43,9 +45,14 @@ impl TokenSink for TitleFinder {
 }
 
 fn main() {
-    let url = match std::env::args().nth(1) {
-        Some(url) => url,
+    let msg = match std::env::args().nth(1) {
+        Some(msg) => msg,
         None => exit(1),
+    };
+
+    let url = match Regex::new(r"https?://[^ ]*").unwrap().find(&msg) {
+        Some(url) => url.as_str(),
+        _ => exit(1),
     };
 
     let url = match Url::parse(&url) {
